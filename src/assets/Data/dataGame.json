@@ -1,0 +1,49 @@
+{
+  "test1": {
+    "files": [
+      {
+        "type": "image",
+        "key": "background",
+        "url": "assets/Images/background.png"
+      },
+      {
+        "type": "image",
+        "key": "item",
+        "url": "assets/Images/item.png"
+      },
+      {
+        "type": "image",
+        "key": "pea",
+        "url": "assets/Images/pea.png"
+      },
+      {
+        "type": "image",
+        "key": "pickaxe",
+        "url": "assets/Images/pickaxe.png"
+      },
+      {
+        "type": "image",
+        "key": "sprinkler",
+        "url": "assets/Images/sprinkler.png"
+      },
+      {
+        "type": "image",
+        "key": "fertilizer",
+        "url": "assets/Images/fertilizer.png"
+      },
+      {
+        "type": "image",
+        "key": "item",
+        "url": "assets/Images/item.png"
+      }
+    ]
+  },
+
+  "meta": {
+    "generated": "1401380327373",
+    "app": "Phaser 3 Asset Packer",
+    "url": "https://phaser.io",
+    "version": "1.0",
+    "copyright": "Photon Storm Ltd. 2018"
+  }
+}
