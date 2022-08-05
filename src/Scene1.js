@@ -19,11 +19,13 @@ const ITEMS = {
   FERTILIZER: 'fertilizer',
 };
 
+const intervalConfig = 500;
+const frameRateConfig = 5;
 const items = [
-  {id: 1, name: ITEMS.PEA, key: ITEMS.PEA},
-  {id: 2, name: ITEMS.PICKAXE, key: ITEMS.PICKAXE},
-  {id: 3, name: ITEMS.SPRINKLER, key: ITEMS.SPRINKLER},
-  {id: 4, name: ITEMS.FERTILIZER, key: ITEMS.FERTILIZER}
+  { id: 1, name: ITEMS.PEA, key: ITEMS.PEA },
+  { id: 2, name: ITEMS.PICKAXE, key: ITEMS.PICKAXE },
+  { id: 3, name: ITEMS.SPRINKLER, key: ITEMS.SPRINKLER },
+  { id: 4, name: ITEMS.FERTILIZER, key: ITEMS.FERTILIZER }
 ];
 
 class Scene1 extends Phaser.Scene {
@@ -35,8 +37,12 @@ class Scene1 extends Phaser.Scene {
   mapTweenBack = new Map();
   pea;
   isDelay;
-  todayText;
-  today;
+  isIncrease;
+  broadContainer;
+  textBroad;
+  lastTime;
+  interval;
+  zoneItem;
 
   constructor() {
     super('Scene1');
@@ -67,14 +73,19 @@ class Scene1 extends Phaser.Scene {
     this.isFertilize = false;
 
     this.load.spritesheet('lv11', 'assets/sprites/anime.png', {
-          frameWidth: 400,
-          frameHeight: 530
-        }
+      frameWidth: 400,
+      frameHeight: 530
+    }
     );
     this.cameras.main.setBackgroundColor('#ffffff')
     this.isDelay = false;
-    this.today = 0;
-    this.todayText = this.add.text(600, 600, this.today, {color: '#000000'});
+    this.isIncrease = false;
+
+  }
+
+  getTime() {
+    let d = new Date();
+    return d.getTime();
   }
 
   //create gameConfig;
@@ -84,37 +95,42 @@ class Scene1 extends Phaser.Scene {
     this.createItem();
     this.addZone();
     this.createAnim();
+    const image = this.add.image(0, 0, 'broad');
+    this.textBroad = this.add.text(0, 10, "0", { color: '#000000', fontSize: '90px' }).setOrigin(0.5);
+    this.broadContainer = this.add.container(this.cameras.main.width / 2, image.height / 2, [image, this.textBroad]);
+    this.lastTime = this.getTime();
+    this.interval = intervalConfig;
   }
 
   createAnim() {
     this.anims.create({
       key: 'walklv1',
       frames: this.anims.generateFrameNumbers('lv11',
-          {frames: [0, 1, 2, 3, 4, 5, 6, 7]}),
-      frameRate: 8,
-      delay: 100
+        { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
+      frameRate: frameRateConfig,
+      delay: 300
     });
     this.anims.create({
       key: 'walklv2',
       frames: this.anims.generateFrameNumbers('lv11',
-          {frames: [8, 9, 10, 11, 12, 13, 14, 15]}),
-      frameRate: 8,
-      delay: 100
+        { frames: [8, 9, 10, 11, 12, 13, 14, 15] }),
+      frameRate: frameRateConfig,
+      delay: 300
     });
     this.anims.create({
       key: 'walklv3',
       frames: this.anims.generateFrameNumbers('lv11',
-          {frames: [16, 17, 18, 19, 20, 21, 22, 23]}),
-      frameRate: 8,
-      delay: 100
+        { frames: [16, 17, 18, 19, 20, 21, 22, 23] }),
+      frameRate: frameRateConfig,
+      delay: 300
     });
     this.anims.create({
       key: 'walklv4',
       frames: this.anims.generateFrameNumbers('lv11', {
         frames: [24, 25, 26, 27, 28, 29, 30, 31]
       }),
-      frameRate: 8,
-      delay: 1000
+      frameRate: frameRateConfig,
+      delay: 1500
     });
     this.anims.create({
       key: 'walklv5',
@@ -122,16 +138,16 @@ class Scene1 extends Phaser.Scene {
         frames: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
           48]
       }),
-      frameRate: 8,
-      delay: 1000
+      frameRate: frameRateConfig,
+      delay: 1500
     });
     this.anims.create({
       key: 'walklv6',
       frames: this.anims.generateFrameNumbers('lv11', {
         frames: [49, 50, 51, 52, 53, 54, 55, 56]
       }),
-      frameRate: 8,
-      delay: 1000
+      frameRate: frameRateConfig,
+      delay: 1500
     });
     this.anims.create({
       key: 'walklv7',
@@ -139,14 +155,14 @@ class Scene1 extends Phaser.Scene {
         frames: [57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
           72, 73]
       }),
-      frameRate: 8,
+      frameRate: frameRateConfig,
       delay: 1000
     });
   }
 
   createBackground() {
     let image = this.add.image(this.cameras.main.width / 2,
-        this.cameras.main.height / 2, 'background');
+      this.cameras.main.height / 2, 'background1');
     let scaleX = this.cameras.main.width / image.width;
     let scaleY = this.cameras.main.height / image.height;
     let scale = Math.max(scaleX, scaleY);
@@ -167,12 +183,12 @@ class Scene1 extends Phaser.Scene {
       const startX = baseX + index * 200;
       let tweenRun, tweenBack;
       const image = this.add.image(startX, baseY, item.key).setScale(
-          0.24).setInteractive().setName(item.name).setOrigin(0.5);
+        0.24).setInteractive().setName(item.name).setOrigin(0.5);
       switch (item.name) {
         case ITEMS.PEA:
           tweenRun = this.tweens.add({
             targets: image,
-            angle: {from: -10, to: 10},
+            angle: { from: -10, to: 10 },
             duration: 250,
             yoyo: true,
             loop: -1,
@@ -189,7 +205,7 @@ class Scene1 extends Phaser.Scene {
         case ITEMS.PICKAXE:
           tweenRun = this.tweens.add({
             targets: image,
-            angle: {from: -90, to: -120},
+            angle: { from: -90, to: -120 },
             duration: 250,
             yoyo: true,
             loop: -1,
@@ -206,7 +222,7 @@ class Scene1 extends Phaser.Scene {
         case ITEMS.FERTILIZER:
           tweenRun = this.tweens.add({
             targets: image,
-            angle: {from: -90, to: -120},
+            angle: { from: -90, to: -120 },
             duration: 250,
             yoyo: true,
             loop: -1,
@@ -223,7 +239,7 @@ class Scene1 extends Phaser.Scene {
         case ITEMS.SPRINKLER:
           tweenRun = this.tweens.add({
             targets: image,
-            angle: {from: -30, to: -60},
+            angle: { from: -30, to: -60 },
             duration: 500,
             yoyo: true,
             loop: -1,
@@ -303,6 +319,7 @@ class Scene1 extends Phaser.Scene {
           vm.isWatering = true;
         }
         if (vm.isWatering) {
+          this.isIncrease = true;
           vm.statusProcess++;
           vm.isWatering = false;
         }
@@ -314,6 +331,7 @@ class Scene1 extends Phaser.Scene {
           vm.isWatering = true;
         }
         if (vm.isFertilize && vm.isWatering) {
+          this.isIncrease = true;
           vm.statusProcess++;
           vm.isWatering = false;
           vm.isFertilize = false;
@@ -326,6 +344,7 @@ class Scene1 extends Phaser.Scene {
           vm.isWatering = true;
         }
         if (vm.isFertilize && vm.isWatering) {
+          this.isIncrease = true;
           vm.statusProcess++;
           vm.isWatering = false;
           vm.isFertilize = false;
@@ -338,6 +357,7 @@ class Scene1 extends Phaser.Scene {
           vm.isWatering = true;
         }
         if (vm.isFertilize && vm.isWatering) {
+          this.isIncrease = true;
           vm.statusProcess++;
           vm.isWatering = false;
           vm.isFertilize = false;
@@ -350,76 +370,69 @@ class Scene1 extends Phaser.Scene {
 
   addZone() {
     this.pea = this.add.sprite(this.cameras.main.width / 2 - 150,
-        this.cameras.main.height / 2 + 50, 'lv-2');
-
-    this.pea.setInteractive();
-    this.pea.input.dropZone = true;
+      this.cameras.main.height / 2 + 50, 'lv-2');
+    this.zoneItems = this.add.zone(this.cameras.main.width / 2 - 150,
+      this.cameras.main.height / 2 + 150, 600, 300);
+    this.zoneItems.setInteractive();
+    this.zoneItems.input.dropZone = true;
     //  Just a visual display of the drop zone
     var graphics = this.add.graphics();
     graphics.lineStyle(2, 0xffff00);
-    graphics.strokeRect(this.pea.x - this.pea.input.hitArea.width / 2,
-        this.pea.y - this.pea.input.hitArea.height / 2, this.pea.width,
-        this.pea.height);
+    graphics.strokeRect(this.zoneItems.x - this.zoneItems.input.hitArea.width / 2,
+      this.zoneItems.y - this.zoneItems.input.hitArea.height / 2, this.zoneItems.width,
+      this.zoneItems.height);
   }
 
   updateProcess() {
     switch (this.statusProcess) {
-        // cuốc ra
+      // cuốc ra
       case STATUS_TREE.STATUS_2:
-        this.pea.anims.play('walklv1');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv1');
-        });
+        this.startAnimation('walklv1');
         break;
-        // cho hạt
+      // cho hạt
       case STATUS_TREE.STATUS_3:
-        this.pea.play('walklv2');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv2');
-        });
+        this.startAnimation('walklv2');
         break;
-        // lấp đất
+      // lấp đất
       case STATUS_TREE.STATUS_4:
-        setTimeout(() => {
-          this.today++;
-        }, 10000)
-        this.pea.play('walklv3');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv3');
-        });
+        this.startAnimation('walklv3');
         break;
-        // ươm mầm
+      // ươm mầm
       case STATUS_TREE.STATUS_5:
-        this.pea.play('walklv4');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv4');
-        });
+        this.startAnimation('walklv4');
         break;
-        // mầm lớn
+      // mầm lớn
       case STATUS_TREE.STATUS_6:
-        this.pea.play('walklv5');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv5');
-        });
+        this.startAnimation('walklv5');
         break;
-        // trưởng thành
+      // trưởng thành
       case STATUS_TREE.STATUS_7:
-        this.pea.play('walklv6');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv6');
-        });
+        this.startAnimation('walklv6');
         break;
       case STATUS_TREE.STATUS_8:
-        this.pea.play('walklv7');
-        this.pea.on('animationcomplete', () => {
-          this.anims.remove('walklv7');
-        });
+        this.startAnimation('walklv7');
         break;
     }
   }
 
+  startAnimation(name) {
+
+    this.pea.anims.play(name);
+    this.pea.on('animationcomplete', () => {
+      this.anims.remove(name);
+      this.isIncrease = false;
+    });
+  }
+
   update() {
-    this.todayText.setText(this.today);
+    const currentTime = this.getTime()
+    const deltaTime = currentTime - this.lastTime;
+    this.lastTime = currentTime;
+    this.interval -= deltaTime;
+    if (this.isIncrease && this.interval < 0) {
+      this.interval = intervalConfig;
+      this.textBroad.setText(+this.textBroad.text + 1);
+    }
   }
 }
 

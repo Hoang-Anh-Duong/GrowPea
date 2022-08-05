@@ -8,6 +8,16 @@
       },
       {
         "type": "image",
+        "key": "background1",
+        "url": "assets/Images/background1.png"
+      },
+      {
+        "type": "image",
+        "key": "broad",
+        "url": "assets/Images/broad.png"
+      },
+      {
+        "type": "image",
         "key": "item",
         "url": "assets/Images/item.png"
       },
