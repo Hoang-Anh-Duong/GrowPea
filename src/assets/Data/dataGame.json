@@ -35,6 +35,56 @@
         "type": "image",
         "key": "item",
         "url": "assets/Images/item.png"
+      },
+      {
+        "type": "image",
+        "key": "lv-2",
+        "url": "assets/Images/lv-2.png"
+      },
+      {
+        "type": "image",
+        "key": "lv-1",
+        "url": "assets/Images/lv-1.png"
+      },
+      {
+        "type": "image",
+        "key": "lv0",
+        "url": "assets/Images/lv0.png"
+      },
+      {
+        "type": "image",
+        "key": "lv1",
+        "url": "assets/Images/lv1.png"
+      },
+      {
+        "type": "image",
+        "key": "lv2",
+        "url": "assets/Images/lv2.png"
+      },
+      {
+        "type": "image",
+        "key": "lv3",
+        "url": "assets/Images/lv3.png"
+      },
+      {
+        "type": "image",
+        "key": "lv4",
+        "url": "assets/Images/lv4.png"
+      },
+      {
+        "type": "image",
+        "key": "lv5",
+        "url": "assets/Images/lv5.png"
+      },
+      {
+        "type": "image",
+        "key": "lv6",
+        "url": "assets/Images/lv6.png"
+      },
+      {
+        "type": "image",
+        "key": "lv7",
+        "url": "assets/Images/lv7.png"
       }
     ]
   },
