@@ -34,10 +34,9 @@ class Scene1 extends Phaser.Scene {
   mapTweenRun = new Map();
   mapTweenBack = new Map();
   pea;
-  lv1;
-  lv2;
-  lv3;
-  lv4;
+  isDelay;
+  todayText;
+  today;
 
   constructor() {
     super('Scene1');
@@ -73,6 +72,9 @@ class Scene1 extends Phaser.Scene {
         }
     );
     this.cameras.main.setBackgroundColor('#ffffff')
+    this.isDelay = false;
+    this.today = 0;
+    this.todayText = this.add.text(600, 600, this.today, {color: '#000000'});
   }
 
   //create gameConfig;
@@ -81,31 +83,38 @@ class Scene1 extends Phaser.Scene {
     this.createItemDefault();
     this.createItem();
     this.addZone();
+    this.createAnim();
+  }
 
+  createAnim() {
     this.anims.create({
       key: 'walklv1',
       frames: this.anims.generateFrameNumbers('lv11',
           {frames: [0, 1, 2, 3, 4, 5, 6, 7]}),
-      frameRate: 8
+      frameRate: 8,
+      delay: 100
     });
     this.anims.create({
       key: 'walklv2',
       frames: this.anims.generateFrameNumbers('lv11',
           {frames: [8, 9, 10, 11, 12, 13, 14, 15]}),
-      frameRate: 8
+      frameRate: 8,
+      delay: 100
     });
     this.anims.create({
       key: 'walklv3',
       frames: this.anims.generateFrameNumbers('lv11',
           {frames: [16, 17, 18, 19, 20, 21, 22, 23]}),
-      frameRate: 8
+      frameRate: 8,
+      delay: 100
     });
     this.anims.create({
       key: 'walklv4',
       frames: this.anims.generateFrameNumbers('lv11', {
         frames: [24, 25, 26, 27, 28, 29, 30, 31]
       }),
-      frameRate: 8
+      frameRate: 8,
+      delay: 1000
     });
     this.anims.create({
       key: 'walklv5',
@@ -113,14 +122,16 @@ class Scene1 extends Phaser.Scene {
         frames: [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
           48]
       }),
-      frameRate: 8
+      frameRate: 8,
+      delay: 1000
     });
     this.anims.create({
       key: 'walklv6',
       frames: this.anims.generateFrameNumbers('lv11', {
-        frames: [ 49, 50, 51, 52, 53, 54, 55, 56]
+        frames: [49, 50, 51, 52, 53, 54, 55, 56]
       }),
-      frameRate: 8
+      frameRate: 8,
+      delay: 1000
     });
     this.anims.create({
       key: 'walklv7',
@@ -128,7 +139,8 @@ class Scene1 extends Phaser.Scene {
         frames: [57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71,
           72, 73]
       }),
-      frameRate: 8
+      frameRate: 8,
+      delay: 1000
     });
   }
 
@@ -337,7 +349,7 @@ class Scene1 extends Phaser.Scene {
   }
 
   addZone() {
-    this.pea = this.add.sprite(this.cameras.main.width / 2 -150,
+    this.pea = this.add.sprite(this.cameras.main.width / 2 - 150,
         this.cameras.main.height / 2 + 50, 'lv-2');
 
     this.pea.setInteractive();
@@ -354,33 +366,60 @@ class Scene1 extends Phaser.Scene {
     switch (this.statusProcess) {
         // cuốc ra
       case STATUS_TREE.STATUS_2:
-        this.pea.play('walklv1');
+        this.pea.anims.play('walklv1');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv1');
+        });
         break;
         // cho hạt
       case STATUS_TREE.STATUS_3:
         this.pea.play('walklv2');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv2');
+        });
         break;
         // lấp đất
       case STATUS_TREE.STATUS_4:
+        setTimeout(() => {
+          this.today++;
+        }, 10000)
         this.pea.play('walklv3');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv3');
+        });
         break;
         // ươm mầm
       case STATUS_TREE.STATUS_5:
         this.pea.play('walklv4');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv4');
+        });
         break;
-        // cây con
+        // mầm lớn
       case STATUS_TREE.STATUS_6:
         this.pea.play('walklv5');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv5');
+        });
         break;
         // trưởng thành
       case STATUS_TREE.STATUS_7:
         this.pea.play('walklv6');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv6');
+        });
         break;
       case STATUS_TREE.STATUS_8:
         this.pea.play('walklv7');
+        this.pea.on('animationcomplete', () => {
+          this.anims.remove('walklv7');
+        });
         break;
     }
   }
 
+  update() {
+    this.todayText.setText(this.today);
+  }
 }
 
