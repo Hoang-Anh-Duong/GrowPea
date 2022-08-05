@@ -376,11 +376,11 @@ class Scene1 extends Phaser.Scene {
     this.zoneItems.setInteractive();
     this.zoneItems.input.dropZone = true;
     //  Just a visual display of the drop zone
-    var graphics = this.add.graphics();
-    graphics.lineStyle(2, 0xffff00);
-    graphics.strokeRect(this.zoneItems.x - this.zoneItems.input.hitArea.width / 2,
-      this.zoneItems.y - this.zoneItems.input.hitArea.height / 2, this.zoneItems.width,
-      this.zoneItems.height);
+    // var graphics = this.add.graphics();
+    // graphics.lineStyle(2, 0xffff00);
+    // graphics.strokeRect(this.zoneItems.x - this.zoneItems.input.hitArea.width / 2,
+    //   this.zoneItems.y - this.zoneItems.input.hitArea.height / 2, this.zoneItems.width,
+    //   this.zoneItems.height);
   }
 
   updateProcess() {
