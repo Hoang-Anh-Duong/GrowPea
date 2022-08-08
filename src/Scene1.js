@@ -494,7 +494,11 @@ class Scene1 extends Phaser.Scene {
     if (this.isIncrease && this.interval < 0) {
       this.interval = intervalConfig;
       this.today++;
-      this.textBroad.setText(this.today + " day");
+      if(this.today > 1) {
+        this.textBroad.setText(this.today + " days");
+      } else {
+        this.textBroad.setText(this.today + " day");
+      }
     }
   }
 }
