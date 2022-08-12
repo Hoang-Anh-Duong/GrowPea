@@ -115,7 +115,7 @@ class Scene1 extends Phaser.Scene {
     this.textSchoolName = this.add.text(
         0,
         0,
-        SCHOOL_NAME1,
+        SCHOOL_NAME,
         {color: '#000000', font: 'bold 35px Arial'}
     ).setOrigin(0);
     this.textSchoolName.x = this.cameras.main.width - this.textSchoolName.width - 10;
