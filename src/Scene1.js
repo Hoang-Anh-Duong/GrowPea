@@ -29,9 +29,6 @@ const items = [
   {id: 4, name: ITEMS.FERTILIZER, key: ITEMS.FERTILIZER}
 ];
 
-const SCHOOL_NAME1 = "Sản phẩm dự thi Thiết bị dạy học số lần thứ I, năm 2022"
-const SCHOOL_NAME2 = "Ứng dụng dạy bài 23: BẢNG CÁC SỐ TỪ 1 ĐẾn 100."
-const SCHOOL_NAME3 = "Nhóm tác giả trường Tiểu học Canh Nậu- Yên Thế-Bắc Giang"
 
 class Scene1 extends Phaser.Scene {
   components = [];
