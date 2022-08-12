@@ -21,6 +21,7 @@ const ITEMS = {
 
 const intervalConfig = 500;
 const frameRateConfig = 5;
+const SCHOOL_NAME = "Trường Tiểu học Đồng Tiến";
 const items = [
   {id: 1, name: ITEMS.PEA, key: ITEMS.PEA},
   {id: 2, name: ITEMS.PICKAXE, key: ITEMS.PICKAXE},
@@ -44,6 +45,7 @@ class Scene1 extends Phaser.Scene {
   interval;
   zoneItem;
   today;
+  textSchoolName;
 
   constructor() {
     super('Scene1');
@@ -109,12 +111,21 @@ class Scene1 extends Phaser.Scene {
     this.addZone();
     this.createAnim();
     const image = this.add.image(0, 0, 'broad');
+    this.textSchoolName = this.add.text(
+        0,
+        0,
+        SCHOOL_NAME,
+        {color: '#000000', font: 'bold 35px Arial'}
+    ).setOrigin(0);
+    this.textSchoolName.x = this.cameras.main.width - this.textSchoolName.width - 10;
+    this.textSchoolName.y = 10;
     this.textBroad = this.add.text(0, 10, this.today + " day",
         {color: '#000000', font: 'bold 55px Arial'}).setOrigin(0.5);
     this.broadContainer = this.add.container(this.cameras.main.width / 2,
         image.height / 2, [image, this.textBroad]);
     this.lastTime = this.getTime();
     this.interval = intervalConfig;
+
   }
 
   createAnim() {
